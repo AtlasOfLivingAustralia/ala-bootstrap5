@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Conversion rules -->
+    <conversionRule conversionWord="clr"
+                    converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+
+    <!-- Console Appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <pattern>
+                %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint}
+                %clr(%5p)
+                %clr(---){faint} %clr([%15.15t]){faint}
+                %clr(%-40.40logger{39}){cyan} %clr(:){faint}
+                %m%n%wex
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========================================================= -->
+    <!-- Development-only stacktrace appender (optional)           -->
+    <!-- Logback XML cannot check Environment.isDevelopmentMode()  -->
+    <!-- Uncomment only for dev profile or ask me to make a        -->
+    <!-- profile-aware logback-spring.xml version.                 -->
+    <!-- ========================================================= -->
+    <!--
+    <appender name="FULL_STACKTRACE" class="ch.qos.logback.core.FileAppender">
+        <file>target/stacktrace.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="StackTrace" level="ERROR" additivity="false">
+        <appender-ref ref="FULL_STACKTRACE" />
+    </logger>
+    -->
+
+    <!-- Root Logger -->
+    <root level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

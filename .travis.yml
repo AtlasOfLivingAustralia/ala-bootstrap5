@@ -1,0 +1,25 @@
+language: groovy
+jdk:
+- openjdk17
+sudo: false
+branches:
+  only:
+  - master
+  - develop
+  - /^feature.*$/
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+after_success:
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && travis_retry ./gradlew publish'
+
+env:
+  global:
+  - JAVA_TOOL_OPTIONS=-Dhttps.protocols=TLSv1.2
+  - secure: Z5AvuNqq+rShuYsJ8JrkXUBHrM/VyAnSbAe6OOMf/Um+u9LGoIb8YFMj4IYWQHf7c4k7MiW2gA46DgGe5I4SHLigxEcg9RC6oZBmw9C2Yl39JuhLxkuG9BNQWSvdoD5yh6Ce16artZOxUpaE3A86/oWBViLjBohXVZXqjhozFj0=
+  - secure: GttlChheLdvfF+v195ve77TvWp+TOpDfM/gN3pw+JKhmnICu9j6qPCV1UhmjSxX5dDcS3cno75aTik1oJSwa7zIJwrKG00eWB6sNwJv6XjJShnMx/CcXpGPHGYb/dubGD5a5Fp08SC8AyQ5175rPE6zgruTXrifxWMAgk430DUE=
