@@ -6,20 +6,20 @@ branches:
   only:
   - master
   - develop
-  - /^feature.*$/
+  - "/^feature.*$/"
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-  - $HOME/.m2
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
+  - "$HOME/.m2"
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 after_success:
   - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && travis_retry ./gradlew publish'
 
 env:
   global:
   - JAVA_TOOL_OPTIONS=-Dhttps.protocols=TLSv1.2
-  - secure: Z5AvuNqq+rShuYsJ8JrkXUBHrM/VyAnSbAe6OOMf/Um+u9LGoIb8YFMj4IYWQHf7c4k7MiW2gA46DgGe5I4SHLigxEcg9RC6oZBmw9C2Yl39JuhLxkuG9BNQWSvdoD5yh6Ce16artZOxUpaE3A86/oWBViLjBohXVZXqjhozFj0=
-  - secure: GttlChheLdvfF+v195ve77TvWp+TOpDfM/gN3pw+JKhmnICu9j6qPCV1UhmjSxX5dDcS3cno75aTik1oJSwa7zIJwrKG00eWB6sNwJv6XjJShnMx/CcXpGPHGYb/dubGD5a5Fp08SC8AyQ5175rPE6zgruTXrifxWMAgk430DUE=
+  - secure: FFIreNltgYBzoWzm4QKQiiuoNZp0Un5dg4HE/DiO1QR8cRSuk1D3RmuwuwAUY9NlAmpXLv5Ff8RDgliE6NWyKL0bDTifd9VEeUkfsXFoK3L4QHMibX1SxIoi0WExwhqvky3x8NcuYgdTbI+6ib1CBLOoZ78DP85fHjdSMCsEthS4m6CHw25itjj2+CVuKf3vKOpDfBkjfpWxUtlW9pqzcjqoS4NiBpkrVneSMqmTr8yjGlH1vh1h/TkArjpPZ2+qhAEWsxbhHcnc2oSGxzG25GyY3PJ7J5rOeJvR5Rn5tEHEZhwP5n8X5TEbmi1Cc6rz3k+Bq3EJG1WO9hcI6WlGfgwkd/EQawAa9KALxcmiAHTLYNOVkGyVz4+OvXTH88MBZkk8NWmIqos2pcOzsHS7+naE7WJu5vkbukduUuA2jbGT/wlFEyoyEX9MBU5gPUWrozIzBeeQkikLp3eNtWWqIsJBLihUqhh72JIaK9f0lZir/UwMdt9mbysPBtvWswTBav16ADONoEawbH40j9JjqFeJlaJJoooGAytMsQy0ddhHxT84ororSxyBifD9Cb3D0gf4g804+J+/llptUaz+JsjBd0+zFcb2sYf79fDgdhm0gXNtBD4xLtAez50ImuM7QJ1a0JYU+M4a5zYU9Jo3Ej7KOkRNcso+YKGqai1O+Ls=
+  - secure: CQCl4LIc6xCm68URN3P9rcbJ0AwDmVu71G9HJvHiHnJQ/WbWaN9HqtZSo1OAR0LXBvo0PHGl2zym5flU30qt+lJ3mCCrcizLEHMd5oSTo/7VOUzJh9/SI0oindCbj/fV2MOeFAKFP+FMLpacg6QrpFEBn7vUNuIhzHRgUpgQmKMWRHT8M6COW+N7bAOfml4al5LCmhfv0Pnxe4rQKgG7VALoG+KIj25Gopg6PBbEy5T8oWhJJdwr+HTNodVr1R+VYZ0I/6IzBz/68OzjUPAZQZZXRGN4/e1J/sFsOpszVsal/5h08anv4AXu4Sk59Fmn7T0Cr1Edu9d1KO4jjN3qqk3QHqfKc1wIMkKOWoEYyggojN7dMfHQA29i5owVnSIq/3kqZQ/jx+J5RtyhJgt4INjIJjYZ1nPQgZRRNuPeLu6bH7hUrfFUML7n3DhgTszvxeoZeO/tTEr3rQpatgnwVbuMBkqc9IL6OKj1mZOvT1nyWFXLqjh3zMn4GOh+RoToGnQNAqRkQJSVw/G18ZKbxwZLO3eRpu5ZAYFczzYDHrON4oxKepJzkHD/V+wt/Dfju9VuHOk8mG69rl4ConQvMNIhjkQCs5JkgfNYFLX9sCp/uovpYvrDrXozwn5cX0Iv2DGa5/2L443h+J0XceeG+LBdYIpQt8Z8IMAzJnA0lgE=
