@@ -27,7 +27,11 @@ class HeaderFooterTagLib {
      * @attr fluidLayout - if true the BS CSS class of "container" is changed to "container-fluid"
      */
     def banner = { attrs ->
-        out << tagLinkService.load('banner', request, attrs)
+        out << tagLinkService.load('banner', "html", request, attrs)
+    }
+
+    def site_banner = { attrs ->
+        out << tagLinkService.load('site-banner', "mustache", request, attrs)
     }
 
     /**
@@ -35,7 +39,11 @@ class HeaderFooterTagLib {
      * TODO: is this supposed to work?
      */
     def head = {
-        out << tagLinkService.load('head', request, [:])
+        out << tagLinkService.load('head', "html", request, [:])
+    }
+
+    def site_head = {
+        out << tagLinkService.load('site-head', "mustache", request, [:])
     }
 
     /**
@@ -58,7 +66,11 @@ class HeaderFooterTagLib {
      * Usage: <hf:footer/>
      */
     def footer = { attrs ->
-        out << tagLinkService.load('footer', request, attrs)
+        out << tagLinkService.load('footer', "html", request, attrs)
+    }
+
+    def site_footer = { attrs ->
+        out << tagLinkService.load('site-footer', "mustache", request, attrs)
     }
 
     /**

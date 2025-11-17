@@ -34,6 +34,8 @@ class HeaderFooterTagLibSpec extends Specification implements TagLibUnitTest<Hea
 //        tagLib.tagLinkService.casLogoutUrl = 'https://example.com/cas/logout'
 //        tagLib.tagLinkService.grailServerURL = 'https://example.com/grailsserverurl'
 
+        tagLib.tagLinkService.grailsApplication = grailsApplication
+
         tagLib.tagLinkService.codecLookup = new DefaultCodecLookup()
         tagLib.tagLinkService.codecLookup.setGrailsApplication(grailsApplication)
         tagLib.tagLinkService.codecLookup.reInitialize()
