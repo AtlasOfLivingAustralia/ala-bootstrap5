@@ -127,12 +127,11 @@ class TagLinkServiceSpec extends Specification implements ServiceUnitTest<TagLin
         and:
         def request = Mock(HttpServletRequest)
         Map attrs = [:]
-        grailsApplication.config.skin.layout = "ala-site-main"
 
         service.metaClass.isLoggedIn = { req, a -> false }
 
         when:
-        String result = service.transform("banner", request, service.getContent("banner"), attrs)
+        String result = service.transform("banner",'mustache', request, service.getContent("banner"), attrs)
 
         then:
         result.contains("class=\"container-fluid\"")
@@ -150,12 +149,11 @@ class TagLinkServiceSpec extends Specification implements ServiceUnitTest<TagLin
         and:
         def request = Mock(HttpServletRequest)
         Map attrs = [:]
-        grailsApplication.config.skin.layout = "ala-main"
 
         service.metaClass.isLoggedIn = { req, a -> false }
 
         when:
-        String result = service.transform("banner", request, service.getContent("banner"), attrs)
+        String result = service.transform("banner",'html', request, service.getContent("banner"), attrs)
 
         then:
         result.contains("class=\"container-fluid\"")

@@ -218,9 +218,10 @@ class TagLinkService {
      * @param attrs any specified params
      * @return
      */
-    String load(String which, String type = "html", def request, Map attrs) {
+    String load(String which, def request, Map attrs) {
         String newContent
         String content = hfCache[which].content
+        String type = grailsApplication.config.getProperty('headerAndFooter.useMustache').toBoolean() ? 'mustache': 'html'
         if (content == "" || (new Date().time > hfCache[which].timestamp + cacheTimeout)) {
             newContent = getContent(which, type)
             if (newContent) {
@@ -229,7 +230,7 @@ class TagLinkService {
                 content = newContent
             }
         }
-        return transform(which, request, content, attrs)
+        return transform(which, type, request, content, attrs)
     }
 
     /**
@@ -263,21 +264,15 @@ class TagLinkService {
      * @param attrs any specified params to override defaults
      * @return
      */
-    String transform(String which, def request, String content, Map attrs) {
-        if(grailsApplication.config.getProperty('skin.layout') == "ala-site-main") {
-            def templateVariables = populateTemplateVariables(request, attrs)
-            return render(which, content, templateVariables)
-        }
-        else {
-            switch (headerAndFooterVersion) {
-                case "2":
-                    def templateVariables = populateTemplateVariables(request, attrs)
-                    return transformV2(content, templateVariables)
-                case "1":
-                    return transformV1(request, content, attrs)
-                default:
-                    return transformV1(request, content, attrs)
-            }
+    String transform(String which, String type, def request, String content, Map attrs) {
+        switch (headerAndFooterVersion) {
+            case "2":
+                def templateVariables = populateTemplateVariables(request, attrs)
+                return type == 'mustache' ? render(which, content, templateVariables) : transformV2(content, templateVariables)
+            case "1":
+                return transformV1(request, content, attrs)
+            default:
+                return transformV1(request, content, attrs)
         }
     }
 
