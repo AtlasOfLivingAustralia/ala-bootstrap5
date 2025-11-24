@@ -64,10 +64,7 @@ class TagLinkService {
             banner: [timestamp: new Date().time, content: ""],
             menu  : [timestamp: new Date().time, content: ""],
             footer: [timestamp: new Date().time, content: ""],
-            head  : [timestamp: new Date().time, content: ""],
-            "site-banner": [timestamp: new Date().time, content: ""],
-            "site-footer": [timestamp: new Date().time, content: ""],
-            "site-head"  : [timestamp: new Date().time, content: ""]
+            head  : [timestamp: new Date().time, content: ""]
     ])
 
     /**
