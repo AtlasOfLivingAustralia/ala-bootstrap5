@@ -61,6 +61,7 @@ class HeaderFooterTagLib {
         out << tagLinkService.load('footer', request, attrs)
     }
 
+
     /**
      * Call this tag from a controller to clear the cache.
      */

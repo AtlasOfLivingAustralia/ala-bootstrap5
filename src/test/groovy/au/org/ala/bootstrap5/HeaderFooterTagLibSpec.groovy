@@ -17,7 +17,8 @@ class HeaderFooterTagLibSpec extends Specification implements TagLibUnitTest<Hea
         config.ala.baseURL = 'https://example.com/base-url'
         config.security.cas.loginUrl = 'https://example.com/cas/login'
         config.security.cas.logoutUrl = 'https://example.com/cas/logout'
-        config.headerAndFooter.baseURL = 'https://www-test.ala.org.au/commonui-bs5-2019'
+        config.headerAndFooter.baseURL = 'https://www.test.ala.org.au/commonui-bs5-2019'
+        config.headerAndFooter.useMustache = true
     }}
 
     @Override
@@ -33,6 +34,8 @@ class HeaderFooterTagLibSpec extends Specification implements TagLibUnitTest<Hea
 //        tagLib.tagLinkService.casLoginUrl = 'https://example.com/cas/login'
 //        tagLib.tagLinkService.casLogoutUrl = 'https://example.com/cas/logout'
 //        tagLib.tagLinkService.grailServerURL = 'https://example.com/grailsserverurl'
+
+        tagLib.tagLinkService.grailsApplication = grailsApplication
 
         tagLib.tagLinkService.codecLookup = new DefaultCodecLookup()
         tagLib.tagLinkService.codecLookup.setGrailsApplication(grailsApplication)
@@ -97,7 +100,7 @@ class HeaderFooterTagLibSpec extends Specification implements TagLibUnitTest<Hea
 
     void "test fathomId substitution" () {
         given:
-        tagLib.tagLinkService.hfCache['footer'].content = "::fathomID::"
+        tagLib.tagLinkService.hfCache['footer'].content = "{{fathomID}}"
         tagLib.tagLinkService.hfCache['footer'].timestamp = new Date().time
 
         when:

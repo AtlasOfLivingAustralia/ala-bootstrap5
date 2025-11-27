@@ -9,3 +9,5 @@ headerAndFooter:
 userdetails:
     url: https://auth.ala.org.au/userdetails/
     profilePath: myprofile
+
+headerAndFooter.useMustache: true

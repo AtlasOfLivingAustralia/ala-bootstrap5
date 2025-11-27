@@ -1,6 +1,9 @@
 package au.org.ala.bootstrap5
 
 import au.org.ala.cas.util.AuthenticationCookieUtils
+import com.github.mustachejava.DefaultMustacheFactory
+import com.github.mustachejava.MustacheFactory
+import grails.core.GrailsApplication
 import grails.web.mapping.LinkGenerator
 import org.grails.encoder.CodecLookup
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +19,9 @@ class TagLinkService {
 
     static LOGGED_IN_CLASS = 'logged-in'
     static LOGGED_OUT_CLASS = 'not-logged-in'
+
+    MustacheFactory mustacheFactory = new DefaultMustacheFactory()
+    GrailsApplication grailsApplication
 
     /**
      * All the following defaults can be overridden by the specified config declarations.
@@ -212,15 +218,16 @@ class TagLinkService {
     String load(String which, def request, Map attrs) {
         String newContent
         String content = hfCache[which].content
+        String type = grailsApplication.config.getProperty('headerAndFooter.useMustache').toBoolean() ? 'mustache': 'html'
         if (content == "" || (new Date().time > hfCache[which].timestamp + cacheTimeout)) {
-            newContent = getContent(which)
+            newContent = getContent(which, type)
             if (newContent) {
                 hfCache[which].content = newContent
                 hfCache[which].timestamp = new Date().time
                 content = newContent
             }
         }
-        return transform(request, content, attrs)
+        return transform(which, type, request, content, attrs)
     }
 
     /**
@@ -228,10 +235,10 @@ class TagLinkService {
      * @param which specifies the include
      * @return
      */
-    String getContent(String which) {
+    String getContent(String which, String type = "html") {
         // Build url based on Bootstrap versions
         def baseUri = headerAndFooterBaseURL
-        def pathSegments = ["${which}.html".toString()]
+        def pathSegments = ["${which}.${type}".toString()]
         def url = buildUri(baseUri, pathSegments)
         def conn = new URL(url).openConnection()
         try {
@@ -248,19 +255,50 @@ class TagLinkService {
 
     /**
      * Does the appropriate substitutions on the included content.
+     * @param which name of the template
+     * @param request
      * @param content
      * @param attrs any specified params to override defaults
      * @return
      */
-    String transform(def request, String content, Map attrs) {
+    String transform(String which, String type, def request, String content, Map attrs) {
         switch (headerAndFooterVersion) {
             case "2":
-                return transformV2(request, content, attrs)
+                def templateVariables = populateTemplateVariables(request, attrs)
+                return type == 'mustache' ? render(which, content, templateVariables) : transformV2(content, templateVariables)
             case "1":
                 return transformV1(request, content, attrs)
             default:
                 return transformV1(request, content, attrs)
         }
+    }
+
+    /***
+     * Populate template variables
+     * @param request
+     * @param attrs
+     * @return
+     */
+    Map populateTemplateVariables(def request, Map attrs) {
+
+        boolean loggedIn = isLoggedIn(request, attrs)
+        boolean fluid = (attrs.fluidLayout ?: "true").toBoolean()
+
+        return [
+                headerFooterServer : encodeOutput(buildUri(headerAndFooterBaseURL)),
+                centralServer      : encodeOutput(buildUri(alaBaseURL)),
+                searchServer       : encodeOutput(buildUri(bieBaseURL)),
+                searchPath         : encodeOutput(bieSearchPath),
+                containerClass     : fluid ? "container-fluid" : "container",
+                loginURL           : encodeOutput(buildLoginLink(request, attrs)),
+                logoutURL          : encodeOutput(buildLogoutLink(request, attrs)),
+                myProfileURL       : encodeOutput(buildMyProfileLink(request, attrs)),
+                editAccountLink    : encodeOutput(buildEditAccountLink(request, attrs)),
+                loginStatus        : loggedIn ? "signedIn" : "signedOut",
+                loggedIn           : loggedIn,
+                loggedOut          : !loggedIn,
+                fathomID           : attrs?.fathomSiteId ?: fathomSiteId
+        ]
     }
 
     /**
@@ -295,31 +333,34 @@ class TagLinkService {
     /**
      * Does the appropriate substitutions on the included content.
      * @param content
-     * @param attrs any specified params to override defaults
+     * @param templateVariables populated variables
      * @return
      */
-    String transformV2(def request, content, attrs) {
-        content = content.replace('::headerFooterServer::', encodeOutput(buildUri(headerAndFooterBaseURL)))
-        content = content.replace('::centralServer::', encodeOutput(buildUri(alaBaseURL)))
-        content = content.replace('::searchServer::', encodeOutput(buildUri(bieBaseURL)))
-        // change for BIE to grailServerURL
-        content = content.replace('::searchPath::', encodeOutput(bieSearchPath))
+    String transformV2(content, Map templateVariables) {
 
-        if ((attrs.fluidLayout ?: "true").toBoolean()) {
-            content = content.replace('::containerClass::', "container-fluid")
-        } else {
-            content = content.replace('::containerClass::', "container")
+        templateVariables.each { key, value ->
+            content = content.replace("::${key}::", value?.toString() ?: "")
         }
 
-        def signedInOutClass = isLoggedIn(request, attrs) ? 'signedIn' : 'signedOut'
-        content = content.replace('::loginURL::', encodeOutput(buildLoginLink(request, attrs)))
-        content = content.replace('::logoutURL::', encodeOutput(buildLogoutLink(request, attrs)))
-        content = content.replace('::myProfileURL::', encodeOutput(buildMyProfileLink(request, attrs)))
-        content = content.replace('::editAccountLink::', encodeOutput(buildEditAccountLink(request, attrs)))
-        content = content.replace('::loginStatus::', signedInOutClass)
-        content = content.replace('::fathomID::', attrs?.fathomSiteId ?: fathomSiteId)
-
         return content
+    }
+
+    /***
+     * Render a mustache template using the given model
+     * @param templateName
+     * @param templateContent
+     * @param templateVariables
+     * @return
+     */
+    String render(String templateName, String templateContent, Map templateVariables) {
+
+        def reader = new StringReader(templateContent)
+        def writer = new StringWriter()
+
+        def mustache = mustacheFactory.compile(reader, templateName)
+        mustache.execute(writer, templateVariables).flush()
+
+        return writer.toString()
     }
 
     /**

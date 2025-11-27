@@ -2,6 +2,8 @@ package au.org.ala.bootstrap5
 
 import grails.config.Config
 import grails.testing.services.ServiceUnitTest
+import org.grails.encoder.CodecLookup
+import org.grails.encoder.Encoder
 import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.mapping.UrlMappingsHolderFactoryBean
 import org.springframework.http.HttpMethod
@@ -34,6 +36,14 @@ class TagLinkServiceSpec extends Specification implements ServiceUnitTest<TagLin
         def servletContext = new MockServletContext()
         logoutRequestUri = service.grailServerURL+'/some/path/with/params?test&foo=bar'
         logoutRequest = MockMvcRequestBuilders.request(HttpMethod.GET, logoutRequestUri).buildRequest(servletContext)
+        Encoder noopEncoder = Stub(Encoder) {
+            encode(_) >> { obj -> obj }
+            isSafe() >> true
+        }
+
+        service.codecLookup = Stub(CodecLookup) {
+            lookupEncoder('HTML') >> noopEncoder
+        }
     }
 
     def cleanup() {
@@ -91,4 +101,63 @@ class TagLinkServiceSpec extends Specification implements ServiceUnitTest<TagLin
         service.buildLogoutUrl(logoutRequest, casLogoutUrl, logoutUrlBase, returnUrl) == "${service.grailServerURL}/logout?appUrl=$returnUrl"
 
     }
+
+    void "mustache renders simple variables"() {
+        given:
+        String template = "<div>{{containerClass}}</div>"
+
+        and:
+        Map model = [ containerClass: "container-fluid" ]
+
+        when:
+        String result = service.render("banner", template, model)
+
+        then:
+        result == "<div>container-fluid</div>"
+    }
+
+    void "transform() renders template with mustache variables"() {
+        given:
+        service.metaClass.getContent = { String which ->
+            return """
+            <div class="{{containerClass}}">{{centralServer}}</div>
+        """
+        }
+
+        and:
+        def request = Mock(HttpServletRequest)
+        Map attrs = [:]
+
+        service.metaClass.isLoggedIn = { req, a -> false }
+
+        when:
+        String result = service.transform("banner",'mustache', request, service.getContent("banner"), attrs)
+
+        then:
+        result.contains("class=\"container-fluid\"")
+        result.contains(service.alaBaseURL)
+    }
+
+    void "transform() renders old template with variables"() {
+        given:
+        service.metaClass.getContent = { String which ->
+            return """
+            <div class="::containerClass::">::centralServer::</div>
+        """
+        }
+
+        and:
+        def request = Mock(HttpServletRequest)
+        Map attrs = [:]
+
+        service.metaClass.isLoggedIn = { req, a -> false }
+
+        when:
+        String result = service.transform("banner",'html', request, service.getContent("banner"), attrs)
+
+        then:
+        result.contains("class=\"container-fluid\"")
+        result.contains(service.alaBaseURL)
+    }
+
 }
