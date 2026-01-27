@@ -72,9 +72,9 @@ class TwitterBootstrapTagLib {
         def active = attrs.boolean('active')
         def link = attrs.link ?: '#'
         if (active) {
-            out << "<li class=\"active\">${value}</li>".toString()
+            out << "<li class=\"breadcrumb-item active\" aria-current=\"page\">${value}</li>".toString()
         } else {
-            out << "<li><a href=\"${link}\">${value}</a></li>".toString()
+            out << "<li class=\"breadcrumb-item\"><a href=\"${link}\">${value}</a></li>".toString()
         }
     }
 }

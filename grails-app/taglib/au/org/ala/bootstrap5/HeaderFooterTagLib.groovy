@@ -201,14 +201,15 @@ class HeaderFooterTagLib {
         // display previous link when not on firststep
         if (currentstep > firststep) {
             linkParams.offset = offset - max
-            writer << '<li>'
+            writer << '<li class="page-item">'
+            linkTagAttrs.class = 'page-link'
             writer << link(linkTagAttrs.clone()) {
                 (attrs.prev ?: messageSource.getMessage('paginate.prev', null, '&laquo;', locale))
             }
             writer << '</li>'
         } else {
-            writer << '<li class="disabled">'
-            writer << '<span>'
+            writer << '<li class="page-item disabled">'
+            writer << '<span class="page-link">'
             writer << (attrs.prev ?: messageSource.getMessage('paginate.prev', null, '&laquo;', locale))
             writer << '</span>'
             writer << '</li>'
@@ -216,7 +217,7 @@ class HeaderFooterTagLib {
 
         // display steps when steps are enabled and laststep is not firststep
         if (steps && laststep > firststep) {
-            linkTagAttrs.class = 'step'
+            linkTagAttrs.class = 'page-link step'
 
             // determine begin and endstep paging variables
             int beginstep = currentstep - Math.round(maxsteps / 2) + (maxsteps % 2)
@@ -237,21 +238,21 @@ class HeaderFooterTagLib {
             // display firststep link when beginstep is not firststep
             if (beginstep > firststep) {
                 linkParams.offset = 0
-                writer << '<li>'
+                writer << '<li class="page-item">'
                 writer << link(linkTagAttrs.clone()) { firststep.toString() }
                 writer << '</li>'
-                writer << '<li class="disabled"><span>...</span></li>'
+                writer << '<li class="page-item disabled"><span class="page-link">...</span></li>'
             }
 
             // display paginate steps
             (beginstep..endstep).each { i ->
                 if (currentstep == i) {
-                    writer << "<li class=\"active\">"
-                    writer << "<span>${i}</span>"
+                    writer << "<li class=\"page-item active\" aria-current=\"page\">"
+                    writer << "<span class=\"page-link\">${i}</span>"
                     writer << "</li>";
                 } else {
                     linkParams.offset = (i - 1) * max
-                    writer << "<li>";
+                    writer << "<li class=\"page-item\">";
                     writer << link(linkTagAttrs.clone()) { i.toString() }
                     writer << "</li>";
                 }
@@ -259,9 +260,9 @@ class HeaderFooterTagLib {
 
             // display laststep link when endstep is not laststep
             if (endstep < laststep) {
-                writer << '<li class="disabled"><span>...</span></li>'
+                writer << '<li class="page-item disabled"><span class="page-link">...</span></li>'
                 linkParams.offset = (laststep - 1) * max
-                writer << '<li>'
+                writer << '<li class="page-item">'
                 writer << link(linkTagAttrs.clone()) { laststep.toString() }
                 writer << '</li>'
             }
@@ -270,15 +271,16 @@ class HeaderFooterTagLib {
         // display next link when not on laststep
         if (currentstep < laststep) {
             linkParams.offset = offset + max
-            writer << '<li>'
+            writer << '<li class="page-item">'
+            linkTagAttrs.class = 'page-link'
             writer << link(linkTagAttrs.clone()) {
                 (attrs.next ? attrs.next : messageSource.getMessage('paginate.next', null, '&raquo;', locale))
             }
             writer << '</li>'
         } else {
             linkParams.offset = offset + max
-            writer << '<li class="disabled">'
-            writer << '<span>'
+            writer << '<li class="page-item disabled">'
+            writer << '<span class="page-link">'
             writer << (attrs.next ? attrs.next : messageSource.getMessage('paginate.next', null, '&raquo;', locale))
             writer << '</span>'
             writer << '</li>'
