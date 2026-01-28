@@ -1,7 +1,7 @@
  <!DOCTYPE html>
 <html lang="en-AU">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="app.version" content="${g.meta(name:'app.version')}"/>
     <meta name="app.build" content="${g.meta(name:'app.build')}"/>
     <meta name="description" content="${grailsApplication.config.getProperty('skin.orgNameLong')}"/>
@@ -26,7 +26,7 @@
     </g:if>
     <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeBootstrapJs')}">
         <script type="text/javascript"
-                src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/bootstrap.min.js"></script>
+                src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/bootstrap.min.js" defer></script>
     </g:if>
 
     <g:layoutHead />
