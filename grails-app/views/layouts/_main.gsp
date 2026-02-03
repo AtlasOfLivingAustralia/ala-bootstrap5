@@ -12,7 +12,7 @@
 
     <title><g:layoutTitle /></title>
     <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeBootstrapCss')}">
-        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/bootstrap.min.css" rel="stylesheet" media="screen,print"/>
+        <link rel="stylesheet" href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-bootstrap.css">
     </g:if>
     <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeAlaStylesCss')}">
         <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-styles.css" rel="stylesheet"
@@ -29,7 +29,7 @@
     <g:elseif test="${hfVersion == 2}">
         <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/autocomplete.min.css" rel="stylesheet" media="screen,print"/>
         <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/autocomplete-extra.min.css" rel="stylesheet" media="screen,print"/>
-        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/font-awesome.min.css" rel="stylesheet" media="screen,print"/>
+%{--        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/font-awesome.min.css" rel="stylesheet" media="screen,print"/>--}%
     </g:elseif>
 
 
