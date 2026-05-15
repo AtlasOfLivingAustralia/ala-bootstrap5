@@ -8,11 +8,10 @@ import org.grails.web.mapping.DefaultLinkGenerator
 import org.grails.web.mapping.UrlMappingsHolderFactoryBean
 import org.springframework.http.HttpMethod
 import org.springframework.mock.web.MockServletContext
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import spock.lang.Specification
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 class TagLinkServiceSpec extends Specification implements ServiceUnitTest<TagLinkService> {
 
@@ -66,7 +65,7 @@ class TagLinkServiceSpec extends Specification implements ServiceUnitTest<TagLin
 
     void "test build logout URL using a defined logout URL"() {
         setup:
-        def request = new MockHttpServletRequestBuilder(HttpMethod.GET, 'http://example.com').buildRequest(new MockServletContext())
+        def request = MockMvcRequestBuilders.request(HttpMethod.GET, 'http://example.com').buildRequest(new MockServletContext())
         def logoutUrlBase = service.grailServerURL + '/logout'
 
         expect:
