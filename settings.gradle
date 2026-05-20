@@ -14,12 +14,3 @@ pluginManagement {
 }
 
 rootProject.name="ala-bootstrap5"
-
-// Inplace plugin config
-// Set to true it needed only for development
-boolean inplace = false
-
-if (inplace) {
-    include ':ala-auth'
-    project(':ala-auth').projectDir = new File(settingsDir,'../ala-auth-plugin')
-}
