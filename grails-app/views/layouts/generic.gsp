@@ -10,7 +10,8 @@
     <title><g:layoutTitle /></title>
 
     <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeBootstrapCss')}">
-        <link rel="stylesheet" href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-bootstrap.css">
+        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/bootstrap.min.css" rel="stylesheet"
+              media="screen,print"/>
     </g:if>
 
     <asset:stylesheet src="${pageProperty(name: 'meta.head-screen-print-css') ?: "core-screen-print"}"
