@@ -1,4 +1,4 @@
-language: groovy
+language: java
 jdk:
 - openjdk17
 sudo: false
