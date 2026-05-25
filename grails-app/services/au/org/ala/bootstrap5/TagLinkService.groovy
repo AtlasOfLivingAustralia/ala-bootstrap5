@@ -64,7 +64,8 @@ class TagLinkService {
             banner: [timestamp: new Date().time, content: ""],
             menu  : [timestamp: new Date().time, content: ""],
             footer: [timestamp: new Date().time, content: ""],
-            head  : [timestamp: new Date().time, content: ""]
+            head  : [timestamp: new Date().time, content: ""],
+            assets: [timestamp: new Date().time, content: ""]
     ])
 
     /**
@@ -264,6 +265,7 @@ class TagLinkService {
     String transform(String which, String type, def request, String content, Map attrs) {
         switch (headerAndFooterVersion) {
             case "2":
+            case "3":
                 def templateVariables = populateTemplateVariables(request, attrs)
                 return type == 'mustache' ? render(which, content, templateVariables) : transformV2(content, templateVariables)
             case "1":
@@ -395,6 +397,7 @@ class TagLinkService {
     String buildLoginoutLink(def request, Map attrs) {
         switch (headerAndFooterVersion) {
             case "2":
+            case "3":
                 return buildLoginoutLinkV2(request, attrs)
             case "1":
                 return buildLoginoutLinkV1(request, attrs)
