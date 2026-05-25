@@ -30,6 +30,12 @@
         <asset:javascript src="${pageProperty(name: 'meta.head-js') ?: 'head'}"/>
         <asset:javascript src="${pageProperty(name: 'meta.deferred-js') ?: 'jquery-extensions'}" />
     </g:if>
+
+    <g:if test="${grailsApplication.config.getProperty('headerAndFooter.challengeJsUrl')}">
+        <script type="text/javascript"
+                src="${grailsApplication.config.getProperty('headerAndFooter.challengeJsUrl')}" defer></script>
+    </g:if>
+
     <g:layoutHead />
     <hf:head/>
 

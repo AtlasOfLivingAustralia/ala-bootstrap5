@@ -28,6 +28,11 @@
                 src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/bootstrap.min.js" defer></script>
     </g:if>
 
+    <g:if test="${grailsApplication.config.getProperty('headerAndFooter.challengeJsUrl')}">
+        <script type="text/javascript"
+                src="${grailsApplication.config.getProperty('headerAndFooter.challengeJsUrl')}" defer></script>
+    </g:if>
+
     <g:layoutHead />
     <hf:head/>
 </head>
