@@ -11,13 +11,6 @@
     <link href="${grailsApplication.config.getProperty('skin.favicon')}" rel="shortcut icon"  type="image/x-icon"/>
 
     <title><g:layoutTitle /></title>
-    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeBootstrapCss')}">
-        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/bootstrap.min.css" rel="stylesheet" media="screen,print"/>
-    </g:if>
-    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeAlaStylesCss')}">
-        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-styles.css" rel="stylesheet"
-              media="screen,print"/>
-    </g:if>
 
     <g:set var="hfVersion" value="${grailsApplication.config.getProperty('headerAndFooter.version', Integer, 2)}" />
     <g:set var="useMustache" value="${grailsApplication.config.getProperty('headerAndFooter.useMustache', Boolean, false)}" />
@@ -26,37 +19,42 @@
         <asset:stylesheet src="${pageProperty(name: 'meta.head-css') ?: "core"}"/>
         <asset:stylesheet src="${pageProperty(name: 'meta.head-screen-print-css') ?: "core-screen-print"}"
                           media="screen,print"/>
-    </g:if>
-    <g:elseif test="${hfVersion == 2 && !useMustache}">
-        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/autocomplete.min.css" rel="stylesheet" media="screen,print"/>
-        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/autocomplete-extra.min.css" rel="stylesheet" media="screen,print"/>
-        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/font-awesome.min.css" rel="stylesheet" media="screen,print"/>
-    </g:elseif>
-    <g:elseif test="${useMustache}">
-        <hf:assets/>
-    </g:elseif>
-
-    <plugin:isAvailable name="alaAdminPlugin"><asset:stylesheet src="ala-admin-asset.css" /></plugin:isAvailable>
-
-    <g:if test="${hfVersion == 1}">
         <asset:javascript src="${pageProperty(name: 'meta.head-js') ?: 'head'}"/>
         <asset:javascript src="${pageProperty(name: 'meta.deferred-js') ?: 'jquery-extensions'}" />
     </g:if>
-    <g:elseif test="${hfVersion == 2 && !useMustache}">
-        <script type="text/javascript"
-                src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/jquery.min.js"></script>
-        <script type="text/javascript"
-                src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/autocomplete.min.js"></script>
+    <g:elseif test="${hfVersion == 2}">
+        <g:if test="${useMustache}">
+            <hf:assets />
+        </g:if>
+        <g:else>
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/bootstrap.min.css" rel="stylesheet" media="screen,print"/>
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-styles.css" rel="stylesheet"
+                  media="screen,print"/>
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/autocomplete.min.css" rel="stylesheet" media="screen,print"/>
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/autocomplete-extra.min.css" rel="stylesheet" media="screen,print"/>
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/font-awesome.min.css" rel="stylesheet" media="screen,print"/>
+            <script type="text/javascript"
+                    src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/jquery.min.js"></script>
+            <script type="text/javascript"
+                    src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/autocomplete.min.js"></script>
+            <script type="text/javascript" src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/application.js"
+                    defer></script>
+            <script type="text/javascript"
+                    src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/bootstrap.min.js" defer></script>
+        </g:else>
+    </g:elseif>
+    <g:elseif test="${hfVersion == 3}">
+        <g:if test="${useMustache}">
+            <hf:assets />
+        </g:if>
+        <g:else>
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-combined.css">
+            <script type="text/javascript"
+                    src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/ala-combined.js">
+        </g:else>
     </g:elseif>
 
-    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeApplicationJs')}">
-        <script type="text/javascript" src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/application.js"
-                defer></script>
-    </g:if>
-    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeBootstrapJs')}">
-        <script type="text/javascript"
-                src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/bootstrap.min.js" defer></script>
-    </g:if>
+    <plugin:isAvailable name="alaAdminPlugin"><asset:stylesheet src="ala-admin-asset.css" /></plugin:isAvailable>
 
     <g:if test="${grailsApplication.config.getProperty('headerAndFooter.challengeJsUrl')}">
         <script type="text/javascript"
