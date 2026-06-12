@@ -11,6 +11,13 @@
     <link href="${grailsApplication.config.getProperty('skin.favicon')}" rel="shortcut icon"  type="image/x-icon"/>
 
     <title><g:layoutTitle /></title>
+    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeBootstrapCss', Boolean, true)}">
+        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/bootstrap.min.css" rel="stylesheet" media="screen,print"/>
+    </g:if>
+    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeAlaStylesCss', Boolean, true)}">
+        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-styles.css" rel="stylesheet"
+              media="screen,print"/>
+    </g:if>
 
     <g:set var="hfVersion" value="${grailsApplication.config.getProperty('headerAndFooter.version', Integer, 2)}" />
     <g:set var="useMustache" value="${grailsApplication.config.getProperty('headerAndFooter.useMustache', Boolean, false)}" />
@@ -24,12 +31,9 @@
     </g:if>
     <g:elseif test="${hfVersion == 2}">
         <g:if test="${useMustache}">
-            <hf:assets />
+            <hf:assets/>
         </g:if>
         <g:else>
-            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/bootstrap.min.css" rel="stylesheet" media="screen,print"/>
-            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-styles.css" rel="stylesheet"
-                  media="screen,print"/>
             <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/autocomplete.min.css" rel="stylesheet" media="screen,print"/>
             <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/autocomplete-extra.min.css" rel="stylesheet" media="screen,print"/>
             <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/font-awesome.min.css" rel="stylesheet" media="screen,print"/>
@@ -37,15 +41,11 @@
                     src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/jquery.min.js"></script>
             <script type="text/javascript"
                     src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/autocomplete.min.js"></script>
-            <script type="text/javascript" src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/application.js"
-                    defer></script>
-            <script type="text/javascript"
-                    src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/bootstrap.min.js" defer></script>
         </g:else>
     </g:elseif>
     <g:elseif test="${hfVersion == 3}">
         <g:if test="${useMustache}">
-            <hf:assets />
+            <hf:assets/>
         </g:if>
         <g:else>
             <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-combined.css" rel="stylesheet" media="screen,print">
@@ -55,6 +55,15 @@
     </g:elseif>
 
     <plugin:isAvailable name="alaAdminPlugin"><asset:stylesheet src="ala-admin-asset.css" /></plugin:isAvailable>
+
+    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeApplicationJs', Boolean, true)}">
+        <script type="text/javascript" src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/application.js"
+                defer></script>
+    </g:if>
+    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeBootstrapJs', Boolean, true)}">
+        <script type="text/javascript"
+                src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/bootstrap.min.js" defer></script>
+    </g:if>
 
     <g:if test="${grailsApplication.config.getProperty('headerAndFooter.challengeJsUrl')}">
         <script type="text/javascript"
