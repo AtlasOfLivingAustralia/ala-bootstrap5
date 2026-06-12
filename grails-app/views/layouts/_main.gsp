@@ -48,7 +48,7 @@
             <hf:assets />
         </g:if>
         <g:else>
-            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-combined.css">
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-combined.css" rel="stylesheet" media="screen,print">
             <script type="text/javascript"
                     src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/ala-combined.js">
         </g:else>
