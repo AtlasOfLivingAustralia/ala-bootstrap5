@@ -11,16 +11,19 @@
     <link href="${grailsApplication.config.getProperty('skin.favicon')}" rel="shortcut icon"  type="image/x-icon"/>
 
     <title><g:layoutTitle /></title>
-    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeBootstrapCss', Boolean, true)}">
-        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/bootstrap.min.css" rel="stylesheet" media="screen,print"/>
-    </g:if>
-    <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeAlaStylesCss', Boolean, true)}">
-        <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-styles.css" rel="stylesheet"
-              media="screen,print"/>
-    </g:if>
 
     <g:set var="hfVersion" value="${grailsApplication.config.getProperty('headerAndFooter.version', Integer, 2)}" />
     <g:set var="useMustache" value="${grailsApplication.config.getProperty('headerAndFooter.useMustache', Boolean, false)}" />
+
+    <g:if test="${hfVersion == 1 || hfVersion == 2}">
+        <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeBootstrapCss', Boolean, true)}">
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/bootstrap.min.css" rel="stylesheet" media="screen,print"/>
+        </g:if>
+        <g:if test="${!grailsApplication.config.getProperty('headerAndFooter.excludeAlaStylesCss', Boolean, true)}">
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-styles.css" rel="stylesheet"
+                  media="screen,print"/>
+        </g:if>
+    </g:if>
 
     <g:if test="${hfVersion == 1}">
         <asset:stylesheet src="${pageProperty(name: 'meta.head-css') ?: "core"}"/>
@@ -48,9 +51,9 @@
             <hf:assets/>
         </g:if>
         <g:else>
-            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-combined.css" rel="stylesheet" media="screen,print">
+            <link href="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/css/ala-combined.css" rel="stylesheet" media="screen,print"/>
             <script type="text/javascript"
-                    src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/ala-combined.js">
+                    src="${grailsApplication.config.getProperty('headerAndFooter.baseURL')}/js/ala-combined.js"></script>
         </g:else>
     </g:elseif>
 
