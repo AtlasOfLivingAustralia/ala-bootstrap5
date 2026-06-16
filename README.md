@@ -1,7 +1,7 @@
 ala-bootstrap5   [![Build Status](https://travis-ci.org/AtlasOfLivingAustralia/ala-bootstrap5.svg?branch=master)](https://travis-ci.org/AtlasOfLivingAustralia/ala-bootstrap5)
 =========
 ## Grails 6
-The Grails 6 version of this plugin can be found on the `master` branch of this repo.
+The Grails 6 version of this plugin can be found on the `main` branch of this repo.
 
 ## Usage
 ```
