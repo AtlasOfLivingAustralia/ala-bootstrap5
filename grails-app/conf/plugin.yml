@@ -8,9 +8,12 @@ headerAndFooter:
     # injects into the header a challenge.js script
     # <script type="text/javascript" src="challengeJsUrl" defer></script>
     challengeJsUrl:
+    useMustache: true
+    excludeBootstrapCss: true
+    excludeAlaStylesCss: true
+    excludeBootstrapJs: true
+    excludeApplicationJs: true
 
 userdetails:
     url: https://auth.ala.org.au/userdetails/
     profilePath: myprofile
-
-headerAndFooter.useMustache: true

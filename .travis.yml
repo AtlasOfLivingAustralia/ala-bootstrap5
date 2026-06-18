@@ -5,6 +5,7 @@ sudo: false
 branches:
   only:
   - master
+  - main
   - develop
   - "/^feature.*$/"
 before_cache:

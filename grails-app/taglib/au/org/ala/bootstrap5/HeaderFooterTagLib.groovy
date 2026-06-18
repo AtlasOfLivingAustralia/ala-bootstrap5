@@ -61,6 +61,15 @@ class HeaderFooterTagLib {
         out << tagLinkService.load('footer', request, attrs)
     }
 
+    /**
+     * Load assets
+     *
+     * Usage: <hf:assets/>
+     */
+    def assets = { attrs ->
+        out << tagLinkService.load('assets', request, attrs)
+    }
+
 
     /**
      * Call this tag from a controller to clear the cache.
