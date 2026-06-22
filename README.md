@@ -1,5 +1,11 @@
 ala-bootstrap5   [![Build Status](https://travis-ci.org/AtlasOfLivingAustralia/ala-bootstrap5.svg?branch=master)](https://travis-ci.org/AtlasOfLivingAustralia/ala-bootstrap5)
 =========
+## Grails 7
+The latest version is: `2.0.0-SNAPSHOT`, which supports Grails 7.1.1.
+NOTES:
+Grails 7.1.1 is not compatible with Grails 6
+
+
 ## Grails 6
 The Grails 6 version of this plugin can be found on the `main` branch of this repo.
 
