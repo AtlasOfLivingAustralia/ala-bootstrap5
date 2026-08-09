@@ -1,25 +1,16 @@
-
 pluginManagement {
     repositories {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core/" }
         gradlePluginPortal()
+        mavenCentral()
     }
     plugins {
-        id "org.grails.grails-web" version "$grailsGradlePluginVersion"
-        id "org.grails.grails-gsp" version "$grailsGradlePluginVersion"
-        id "com.bertramlabs.asset-pipeline" version "4.3.0"
-        id "com.github.erdi.webdriver-binaries" version "3.2"
+        id "org.apache.grails.gradle.grails-web" version "$grailsGradlePluginVersion"
+        id "org.apache.grails.gradle.grails-gsp" version "$grailsGradlePluginVersion"
+//        id "com.bertramlabs.asset-pipeline" version "4.3.0"
+//        id "com.github.erdi.webdriver-binaries" version "3.2"
     }
 }
 
 rootProject.name="ala-bootstrap5"
-
-// Inplace plugin config
-// Set to true it needed only for development
-boolean inplace = false
-
-if (inplace) {
-    include ':ala-auth'
-    project(':ala-auth').projectDir = new File(settingsDir,'../ala-auth-plugin')
-}

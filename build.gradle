@@ -1,11 +1,12 @@
 plugins {
     id "groovy"
-    id "org.grails.grails-web"
-    id "org.grails.grails-gsp"
-    id "com.github.erdi.webdriver-binaries"
+//    id "com.github.erdi.webdriver-binaries"
     id "war"
     id "idea"
-    id "com.bertramlabs.asset-pipeline"
+    //id "com.bertramlabs.asset-pipeline"
+    id "cloud.wondrify.asset-pipeline" version "5.0.32"
+    id "org.apache.grails.gradle.grails-web"
+    id "org.apache.grails.gradle.grails-gsp"
     id "application"
     id "eclipse"
     id "maven-publish"
@@ -14,6 +15,7 @@ plugins {
 group = "org.grails.plugins"
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven { url "https://repo.grails.org/grails/core/" }
     maven { url "https://nexus.ala.org.au/content/groups/public/" }
@@ -34,34 +36,37 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation "org.springframework.boot:spring-boot-starter-logging"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
-    implementation "org.grails:grails-core"
+    implementation "org.apache.grails:grails-core:${grailsVersion}"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
-    implementation "org.grails:grails-web-boot"
-    implementation "org.grails:grails-logging"
-    implementation "org.grails:grails-plugin-rest"
-    implementation "org.grails:grails-plugin-databinding"
-    implementation "org.grails:grails-plugin-i18n"
-    implementation "org.grails:grails-plugin-services"
-    implementation "org.grails:grails-plugin-url-mappings"
-    implementation "org.grails:grails-plugin-interceptors"
-    implementation "org.grails.plugins:cache"
-    implementation "org.grails.plugins:async"
-    implementation "org.grails.plugins:scaffolding"
-    implementation "org.grails.plugins:gsp"
+    implementation "org.apache.grails:grails-web-boot:${grailsVersion}"
+    implementation "org.apache.grails:grails-logging:${grailsVersion}"
+    implementation "org.apache.grails:grails-rest-transforms:${grailsVersion}"
+    implementation "org.apache.grails:grails-databinding:${grailsVersion}"
+    implementation "org.apache.grails.i18n:grails-i18n:${grailsVersion}"
+    implementation "org.apache.grails:grails-services:${grailsVersion}"
+    implementation "org.apache.grails:grails-url-mappings:${grailsVersion}"
+    implementation "org.apache.grails:grails-interceptors:${grailsVersion}"
+    implementation "org.apache.grails:grails-cache:${grailsVersion}"
+    implementation "org.apache.grails:grails-async:${grailsVersion}"
+    implementation "org.apache.grails:grails-scaffolding:${grailsVersion}"
+    implementation "org.apache.grails:grails-gsp:${grailsVersion}"
     implementation 'com.github.spullara.mustache.java:compiler:0.9.10'
-    console "org.grails:grails-console"
-    profile "org.grails.profiles:web-plugin"
-    runtimeOnly "com.bertramlabs.plugins:asset-pipeline-grails:3.0.10"
+    console "org.apache.grails:grails-console:${grailsVersion}"
+    profile "org.apache.grails.profiles:web-plugin:${grailsVersion}"
+
+    // ── Asset Pipeline ─────────────────────────────────────────────────────
+    runtimeOnly "cloud.wondrify:asset-pipeline-grails:5.0.32"
+    //runtimeOnly "com.bertramlabs.plugins:asset-pipeline-grails:3.0.10"
 
     testRuntimeOnly "net.sourceforge.htmlunit:htmlunit:2.18"
-    implementation 'au.org.ala:ala-cas-client:2.5'
+    implementation 'au.org.ala:ala-cas-client:4.0.0-SNAPSHOT'
 
-    testImplementation "org.grails:grails-testing-support:3.2.1"
-    testImplementation "org.grails:grails-web-testing-support:3.2.1"
-    testImplementation "org.grails:grails-gorm-testing-support:3.2.1"
+    testImplementation "org.apache.grails.testing:grails-testing-support-core:${grailsVersion}"
+    testImplementation "org.apache.grails:grails-testing-support-web:${grailsVersion}"
+    testImplementation "org.apache.grails:grails-testing-support-datamapping:${grailsVersion}"
 
-    testImplementation "org.spockframework:spock-core:2.3-groovy-3.0"
+    testImplementation "org.spockframework:spock-core:2.3-groovy-4.0"
 
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 
@@ -136,15 +141,19 @@ publishing {
         mavenJar(MavenPublication) {
             pom.withXml {
                 def pomNode = asNode()
-                pomNode.dependencyManagement.replaceNode {}
+                if (pomNode.dependencyManagement) {
+                    pomNode.dependencyManagement.replaceNode {}
+                }
 
                 // simply remove dependencies without a version
                 // version-less dependencies are handled with dependencyManagement
                 // see https://github.com/spring-gradle-plugins/dependency-management-plugin/issues/8 for more complete solutions
-                pomNode.dependencies.dependency.findAll {
-                    it.version.text().isEmpty()
-                }.each {
-                    it.replaceNode {}
+                if (pomNode.dependencies?.dependency) {
+                    pomNode.dependencies.dependency.findAll {
+                        it.version.text().isEmpty()
+                    }.each {
+                        it.replaceNode {}
+                    }
                 }
             }
             from components.java

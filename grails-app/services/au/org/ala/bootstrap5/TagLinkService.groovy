@@ -9,7 +9,7 @@ import org.grails.encoder.CodecLookup
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.util.UriComponentsBuilder
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 import java.util.concurrent.ConcurrentHashMap
 
 
