@@ -60,7 +60,7 @@ dependencies {
     //runtimeOnly "com.bertramlabs.plugins:asset-pipeline-grails:3.0.10"
 
     testRuntimeOnly "net.sourceforge.htmlunit:htmlunit:2.18"
-    implementation 'au.org.ala:ala-cas-client:4.0.0-SNAPSHOT'
+    implementation 'au.org.ala:ala-cas-client:4.1.0'
 
     testImplementation "org.apache.grails.testing:grails-testing-support-core:${grailsVersion}"
     testImplementation "org.apache.grails:grails-testing-support-web:${grailsVersion}"
